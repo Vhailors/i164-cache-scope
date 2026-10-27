@@ -1,0 +1,18 @@
+name: poison
+on:
+  push:
+    branches: [poison]
+permissions: {}
+jobs:
+  c:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Attacker writes poisoned cache content
+        run: mkdir -p cache-dir && echo attacker-was-here > cache-dir/marker.txt
+      - name: Save poisoned cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: cache-dir
+          key: pwn-attacker1
+      - name: Confirm saved
+        run: echo "saved poisoned cache pwn-attacker1"
