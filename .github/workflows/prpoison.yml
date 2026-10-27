@@ -1,0 +1,16 @@
+name: prpoison
+on:
+  pull_request:
+permissions: {}
+jobs:
+  c:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR-context attacker writes poison
+        run: mkdir -p cache-dir && echo attacker-pr-was-here > cache-dir/marker.txt
+      - name: Save poison from PR context
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: cache-dir
+          key: pwn-prpoison1
+      - run: echo "saved pwn-prpoison1 from pull_request context"
