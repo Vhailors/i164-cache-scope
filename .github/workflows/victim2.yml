@@ -1,0 +1,18 @@
+name: victim2
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  c:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore privileged (isolated prefix)
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: cache-dir
+          key: main-key2-${{ github.run_id }}
+          restore-keys: |
+            prq-
+      - name: Check
+        run: |
+          if [ -f cache-dir/marker.txt ]; then echo "RESULT=POISON_RESTORED content=$(cat cache-dir/marker.txt)"; else echo "RESULT=CLEAN_NO_MARKER"; fi
